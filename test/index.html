@@ -12,47 +12,8 @@
             .stage{
                 text-align: center;
             }
-            .btn-wrap{
-                margin-top: 50px;
-            }
-            .btn{
-                display:inline-block;
-                padding:.2em 1em;
-                font-size:1em;
-                font-weight:normal;
-                line-height:1.5;
-                text-align:center;
-                white-space:nowrap;
-                vertical-align:middle;
-                -ms-touch-action:manipulation;
-                touch-action:manipulation;
-                cursor:pointer;
-                -webkit-user-select:none;
-                -moz-user-select:none;
-                -ms-user-select:none;
-                user-select:none;
-                border:1px solid #bfcbd9;
-                background-color:#fff;
-                color: #1f2d3d;   
-                border-radius:.25em;
-            }
-            .btn:focus,.btn:active:focus{outline:0} 
-            .btn:focus,.btn:hover{text-decoration:none}
-            .btn:hover{color:#fff;background-color:#20a0ff;border-color:#20a0ff;
-                box-shadow: 0px 1px 0px rgba(0,0,0,.2), 2px 3px 8px rgba(0, 0, 0,.4);
-            }
-            .btn:active{box-shadow:none;background-image:none;outline:0;}
-            .btn:disabled{cursor:not-allowed;opacity:.65} 
-            .btn-primary {
-                background-color:#fff;
-                color: #ff510d;
-                border: 1px solid #ff510d;
-                text-align:center;    
-            }
-            .btn-primary:hover {
-                color: #fff;
-                background-color: #ff510d;
-                border-color:#ff510d;
+            .pagerc{
+                margin-top:50px;
             }
         </style>
     </head>
@@ -60,10 +21,11 @@
         <div id="container">
             <div class="test stage">
                 <h3>pager</h3>
-                <c-pager :pwd="pwd" :len="len"></c-pager>
-                <div class="btn-wrap">
-                    <button class="btn btn-primary" @click="fChangePwd">修改密码</button>
-                </div>
+                <div class="pagerc">
+                    <c-pager :maxentries="maxentries" :items-per-page="items_per_page" 
+                    :num-display-entries="num_display_entries" :num-edge-entries="num_edge_entries" 
+                    :cur-page="cur_page"></c-pager>
+                </div>  
             </div>
         </div>
         <script src="../node_modules/vue/dist/vue.js"></script>

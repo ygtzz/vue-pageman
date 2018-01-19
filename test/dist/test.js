@@ -73,8 +73,8 @@
 "use strict";
 
 
-var _VuePasswordbar = VuePasswordbar,
-    passwordbar = _VuePasswordbar.passwordbar;
+var _VuePager = VuePager,
+    pager = _VuePager.pager;
 
 
 new Vue({
@@ -83,26 +83,17 @@ new Vue({
   created: function created() {},
   data: function data() {
     return {
-      pwd: '',
-      len: 6
+      maxentries: 1000,
+      items_per_page: 10,
+      num_display_entries: 4,
+      cur_page: 1,
+      num_edge_entries: 1
     };
   },
 
-  methods: {
-    fChangePwd: function fChangePwd() {
-      var len = this.len;
-      var list = Array(len + 1).join(0).split('').map(function (item, index) {
-        return index + 1;
-      });
-      var num = list[Math.floor(list.length * Math.random())];
-      if (this.pwd.length <= len) {
-        this.pwd += num;
-      }
-      console.log(this.pwd);
-    }
-  },
+  methods: {},
   components: {
-    'c-password-bar': passwordbar
+    'c-pager': pager
   }
 });
 

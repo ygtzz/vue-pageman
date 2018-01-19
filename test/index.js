@@ -8,20 +8,15 @@ new Vue({
   },
   data() {
     return {
-      pwd:'',
-      len: 6
+      maxentries:1000,
+      items_per_page:10,
+      num_display_entries:4,
+      cur_page:1,
+      num_edge_entries:1
     }
   },
   methods:{
-    fChangePwd(){
-      const len = this.len;
-      const list = Array(len+1).join(0).split('').map((item,index) => index+1);
-      const num = list[Math.floor(list.length * Math.random())];
-      if(this.pwd.length <= len){
-        this.pwd += num;
-      }
-      console.log(this.pwd);
-    }
+    
   },
   components: {
     'c-pager':pager,

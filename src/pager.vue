@@ -1,10 +1,18 @@
 <template>
-    <ul class="pwd-list">
-        <li v-for="n in len" :class="{'active': n <= password.length}" class="pwd-item" :key="'pwd'+n"></li>
-    </ul>
+    <div class="pager">
+        {{itemsPerPage}}-{{numDisplayEntries}}-{{numEdgeEntries}}-{{sItems}}-{{interval}}-{{mItems}}-{{eItems}}
+        <c-pager-item :b-cur="false" :pageid="currentPage" :text="prevText" classes="prev" :link-to="linkTo" :click-handler="pageSelected" v-show="bShowPrev"></c-pager-item>
+        <c-pager-item v-for="(i,index) in sItems" :pageid="i" :text="String(i)" :key="'sitem'+index" :link-to="linkTo" :click-handler="pageSelected"></c-pager-item>
+        <c-pager-item v-if="bShowStartEllipseItem" :pageid="0" :text="ellipseText" :link-to="linkTo" :click-handler="pageSelected"></c-pager-item>
+        <c-pager-item v-for="(i,index) in mItems" :pageid="i" :text="String(i)" :key="'mitem'+index" :link-to="linkTo" :click-handler="pageSelected"></c-pager-item>
+        <c-pager-item v-if="bShowEndEllipseItem" :pageid="0" :text="ellipseText" :link-to="linkTo" :click-handler="pageSelected"></c-pager-item>
+        <c-pager-item v-for="(i,index) in eItems" :pageid="i" :text="String(i)" :key="'eitem'+index" :link-to="linkTo" :click-handler="pageSelected"></c-pager-item>
+        <c-pager-item :b-cur="false" :pageid="currentPage" :text="nextText" classes="next" :link-to="linkTo" :click-handler="pageSelected" v-show="bShowNext"></c-pager-item>
+    </div>
 </template>
 
 <script>
+import pageritem from './pager-item.vue';
 
 export default{
     name:'c-pager',
@@ -13,93 +21,129 @@ export default{
             type:Number,
             required:true
         },
-        items_per_page:{
+        itemsPerPage:{
             type:Number,
             default:10
         },
-        num_display_entries:{
+        numDisplayEntries:{
             type:Number,
             default:10
         },
-        current_page:{
+        curPage:{
             type:Number,
             default:0
         },
-        num_edge_entries:{
+        numEdgeEntries:{
             type:Number,
             default:0
         },
-        link_to:{
-            type:String,
-            default:'#'
+        prevShowAlways:{
+            type:Boolean,
+            default:true
         },
-        prev_text:{
+        nextShowAlways:{
+            type:Boolean,
+            default:true
+        },
+        prevText:{
             type:String,
             default:"Prev"
         },
-        next_text:{
+        nextText:{
             type:String,
             default:"Next"
         },
-        ellipse_text:{
+        ellipseText:{
             type:String,
             default:"..."
         },
-        prev_show_always:{
-            type:Boolean,
-            default:true
-        },
-        next_show_always:{
-            type:Boolean,
-            default:true
+        linkTo:{
+            type:String,
+            default:'#'
         },
         callback:{
             type:Function,
             default:function(){return false;}
         }
     },
+    data(){
+        return {
+            currentPage:this.curPage
+        }
+    },
     computed:{
         numPages(){
-            return Math.ceil(this.maxentries/this.items_per_page);
+            return Math.ceil(this.maxentries/this.itemsPerPage);
+        },
+        interval(){
+            var numDisplayEntries = this.numDisplayEntries,
+                current_page = this.currentPage,
+                ne_half = Math.ceil(numDisplayEntries/2),
+			    np = this.numPages,
+			    upper_limit = np - numDisplayEntries;
+			var start = current_page > ne_half ? Math.max(Math.min(current_page - ne_half, upper_limit), 0) : 0;
+			var end = current_page > ne_half ? Math.min(current_page + ne_half, np) : Math.min(numDisplayEntries, np);
+			return [start,end];
+        },
+        sItems(){
+            var end = Math.min(this.numEdgeEntries, this.interval[0]),
+                res = [];
+            for(var i=0; i<end; i++) {
+                res.push(i);
+            }
+            return res;
+        },
+        bShowStartEllipseItem(){
+            return this.numEdgeEntries > 0 && this.numEdgeEntries < this.interval[0] && this.ellipseText;
+        },
+        mItems(){
+            var items = [],
+                interval = this.interval;
+            for(var i=interval[0]; i<interval[1]; i++) {
+				items.push(i);
+            }
+            return items;
+        },
+        bShowEndEllipseItem(){
+            return this.numEdgeEntries > 0 && this.numPages - this.numEdgeEntries > this.interval[1] && this.ellipseText
+        },
+        eItems(){
+            var begin = Math.max(this.numPages - this.numEdgeEntries, this.interval[1]),
+                res = [];
+            for(var i= begin; i< this.numPages; i++) {
+                res.push(i);
+            }
+            return res;
+        },
+        bShowPrev(){
+            return this.prevText && (this.currentPage > 0 || this.prevShowAlways);
+        },
+        bShowNext(){
+            return this.nextText && (this.currentPage < this.numPages-1 || this.nextShowAlways);
+        },
+        pageid(){
+            var page_id = this.currentPage,
+                np = this.numPages;
+            return page_id < 0 ? 0 : (page_id < np ? page_id : np-1 );
         }
     },
     methods:{
-        
+        pageSelected: function(page_id, evt){
+			this.currentPage = page_id;
+            // drawLinks(); => 数据赋值
+			var continuePropagation = this.callback(page_id);
+			// if (!continuePropagation) {
+            //     evt.stopPropagation();
+			// }
+			return continuePropagation;
+		}
+    },
+    components:{
+        'c-pager-item':pageritem
     }
 }
 </script>
 
 <style lang="sass" scoped>
-     .pwd-list {
-        display: inline-block;
-        border: 1px solid #ffa200;
-        // position: relative;
-        font-size:0;
-        padding-left:0;
-    }
-    .pwd-item {
-        display: inline-block;
-        width:  100px;
-        height: 88px;
-        position: relative;
-        border-right: 1px solid #ccc;
-        &:last-of-type{
-          border:0 none;
-        }
-        &.active{
-          &:before{
-              position: absolute;
-              content: '';
-              left: 0;
-              top: 0;
-              right: 0;
-              bottom: 0;
-              width: 15px;
-              height: 15px;
-              border-radius: 50%;
-              background-color: #000;
-              margin: auto;
-          }
-        }
-    }
+     
 </style>
