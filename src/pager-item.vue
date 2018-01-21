@@ -1,6 +1,6 @@
 <template>
-    <span v-if="bCur" class='current' :class="classes" v-text="text"></span>
-    <a v-else :href="link" v-text="text" :class="classes" @click="clickHandler(pageid)"></a>
+    <span v-if="bCur" class='current page-item' :class="classes" v-text="text"></span>
+    <a v-else :href="link" v-text="text" class="page-item" :class="classes" @click="clickHandler(pageid)"></a>
 </template>
 
 <script>
@@ -50,5 +50,18 @@ export default{
 </script>
 
 <style lang="sass" scoped>
-     
+     .page-item{
+        display: inline-block;
+        padding: 0.1em 0.4em;
+        margin-right: 5px;
+        margin-bottom: 5px;
+     }
+     .page-item:link,.page-item:visited,.page-item:hover,.page-item:active{
+        text-decoration: none;
+        border: 1px solid #AAE;
+        color: #15B;
+     }
+     .page-item:hover,.page-item:active{
+        
+     }
 </style>

@@ -83,8 +83,8 @@ new Vue({
   created: function created() {},
   data: function data() {
     return {
-      maxentries: 1000,
-      items_per_page: 10,
+      total: 1000,
+      pageSize: 10,
       num_display_entries: 4,
       cur_page: 1,
       num_edge_entries: 1

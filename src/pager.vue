@@ -1,6 +1,8 @@
 <template>
     <div class="pager">
-        {{itemsPerPage}}-{{numDisplayEntries}}-{{numEdgeEntries}}-{{sItems}}-{{interval}}-{{mItems}}-{{eItems}}
+        <div>
+            {{itemsPerPage}}-{{numDisplayEntries}}-{{numEdgeEntries}}-{{sItems}}-{{interval}}-{{mItems}}-{{eItems}}            
+        </div>
         <c-pager-item :b-cur="false" :pageid="currentPage" :text="prevText" classes="prev" :link-to="linkTo" :click-handler="pageSelected" v-show="bShowPrev"></c-pager-item>
         <c-pager-item v-for="(i,index) in sItems" :pageid="i" :text="String(i)" :key="'sitem'+index" :link-to="linkTo" :click-handler="pageSelected"></c-pager-item>
         <c-pager-item v-if="bShowStartEllipseItem" :pageid="0" :text="ellipseText" :link-to="linkTo" :click-handler="pageSelected"></c-pager-item>
@@ -17,11 +19,11 @@ import pageritem from './pager-item.vue';
 export default{
     name:'c-pager',
     props:{
-        maxentries:{
+        total:{
             type:Number,
             required:true
         },
-        itemsPerPage:{
+        pageSize:{
             type:Number,
             default:10
         },
@@ -74,6 +76,14 @@ export default{
     computed:{
         numPages(){
             return Math.ceil(this.maxentries/this.itemsPerPage);
+        },
+        maxentries(){
+            var total = this.total;
+            return (!total || total < 0) ? 1 : total;
+        },
+        itemsPerPage(){
+            var pageSize = this.pageSize;
+            return (!pageSize || pageSize < 0) ? 1 : pageSize;
         },
         interval(){
             var numDisplayEntries = this.numDisplayEntries,
@@ -128,7 +138,7 @@ export default{
         }
     },
     methods:{
-        pageSelected: function(page_id, evt){
+        pageSelected(page_id, evt){
 			this.currentPage = page_id;
             // drawLinks(); => 数据赋值
 			var continuePropagation = this.callback(page_id);
@@ -136,6 +146,29 @@ export default{
             //     evt.stopPropagation();
 			// }
 			return continuePropagation;
+        },
+        selectPage(page_id){
+            this.pageSelected(page_id);
+        },
+        prevPage(){
+            var current_page = this.currentPage;
+			if (current_page > 0) {
+				pageSelected(current_page - 1);
+				return true;
+			}
+			else {
+				return false;
+			}
+		},
+		nextPage(){
+            var current_page = this.currentPage;
+			if(current_page < this.numPages - 1) {
+				pageSelected(current_page+1);
+				return true;
+			}
+			else {
+				return false;
+			}
 		}
     },
     components:{
