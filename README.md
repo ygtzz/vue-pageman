@@ -1,4 +1,4 @@
-## vue-pager
+## vue-pageman
 
 a vue pagination component, modified from jquery pagination
 
