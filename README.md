@@ -12,16 +12,16 @@ yarn add vue-pageman
 
 ### Quickstart
 ```javascript
-require('vue-pager/dist/vue-pager.css');
+require('vue-pager/dist/vue-pageman.css');
 
 // in ES6 modules
-import { pager } from 'vue-pager';
+import { pager } from 'vue-pageman';
 
 // in CommonJS
-const { pager } = require('vue-pager');
+const { pager } = require('vue-pageman');
 
 // in Global variable
-const { pager } = VuePager;
+const { pager } = VuePageman;
 
 Vue.component('c-pager',pager);
 ```

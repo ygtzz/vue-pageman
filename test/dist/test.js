@@ -73,8 +73,8 @@
 "use strict";
 
 
-var _VuePager = VuePager,
-    pager = _VuePager.pager;
+var _VuePageman = VuePageman,
+    pager = _VuePageman.pager;
 
 
 new Vue({

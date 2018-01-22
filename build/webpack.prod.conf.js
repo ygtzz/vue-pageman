@@ -6,7 +6,7 @@ var config = require('./config');
 
 var aPlugin = [
     new ExtractTextPlugin({
-        filename:'vue-pager.css',
+        filename:'vue-pageman.css',
         allChunks: true
     }),
     new webpack.DefinePlugin({
@@ -23,9 +23,9 @@ var aPlugin = [
 module.exports = merge(baseWebapckConfig, {
     output: {
         path: config.sDist,
-        library: 'VuePager',
+        library: 'VuePageman',
         libraryTarget: 'umd',
-        filename: 'vue-pager.js'
+        filename: 'vue-pageman.js'
     },
     module: {
         rules: [

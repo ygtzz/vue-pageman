@@ -1,4 +1,4 @@
-const { pager } = VuePager;
+const { pager } = VuePageman;
 
 new Vue({
   name:'c-app',
