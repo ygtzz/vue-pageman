@@ -1,5 +1,5 @@
 {
-  "name": "vue-pager",
+  "name": "vue-pageman",
   "version": "0.0.1",
   "description": "a vue pager component",
   "main": "dist/vue-pager.js",

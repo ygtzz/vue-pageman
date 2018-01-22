@@ -5,9 +5,9 @@ a vue pagination component, modified from jquery pagination
 ### Install
 
 ```bash
-npm install vue-pager -S
+npm install vue-pageman -S
 
-yarn add vue-pager
+yarn add vue-pageman
 ```
 
 ### Quickstart
