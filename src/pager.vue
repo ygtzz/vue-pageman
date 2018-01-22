@@ -1,15 +1,12 @@
 <template>
     <div class="pager">
-        <div>
-            {{itemsPerPage}}-{{numDisplayEntries}}-{{numEdgeEntries}}-{{sItems}}-{{interval}}-{{mItems}}-{{eItems}}            
-        </div>
-        <c-pager-item :b-cur="false" :pageid="currentPage" :text="prevText" classes="prev" :link-to="linkTo" :click-handler="pageSelected" v-show="bShowPrev"></c-pager-item>
-        <c-pager-item v-for="(i,index) in sItems" :pageid="i" :text="String(i)" :key="'sitem'+index" :link-to="linkTo" :click-handler="pageSelected"></c-pager-item>
-        <c-pager-item v-if="bShowStartEllipseItem" :pageid="0" :text="ellipseText" :link-to="linkTo" :click-handler="pageSelected"></c-pager-item>
-        <c-pager-item v-for="(i,index) in mItems" :pageid="i" :text="String(i)" :key="'mitem'+index" :link-to="linkTo" :click-handler="pageSelected"></c-pager-item>
-        <c-pager-item v-if="bShowEndEllipseItem" :pageid="0" :text="ellipseText" :link-to="linkTo" :click-handler="pageSelected"></c-pager-item>
-        <c-pager-item v-for="(i,index) in eItems" :pageid="i" :text="String(i)" :key="'eitem'+index" :link-to="linkTo" :click-handler="pageSelected"></c-pager-item>
-        <c-pager-item :b-cur="false" :pageid="currentPage" :text="nextText" classes="next" :link-to="linkTo" :click-handler="pageSelected" v-show="bShowNext"></c-pager-item>
+        <c-pager-item :b-cur="currentPage == 0" :pageid="currentPage-1" :text="prevText" classes="prev" :link-to="linkTo" :click-handler="pageSelected" v-show="bShowPrev"></c-pager-item>
+        <c-pager-item :b-cur="currentPage == i" v-for="(i,index) in sItems" :pageid="i" :text="String(i+1)" :key="'sitem'+index" :link-to="linkTo" :click-handler="pageSelected"></c-pager-item>
+        <span v-if="bShowStartEllipseItem" v-text="ellipseText" class="ellipse-item"></span>
+        <c-pager-item :b-cur="currentPage == i" v-for="(i,index) in mItems" :pageid="i" :text="String(i+1)" :key="'mitem'+index" :link-to="linkTo" :click-handler="pageSelected"></c-pager-item>
+        <span v-if="bShowEndEllipseItem" v-text="ellipseText" class="ellipse-item"></span>
+        <c-pager-item :b-cur="currentPage == i" v-for="(i,index) in eItems" :pageid="i" :text="String(i+1)" :key="'eitem'+index" :link-to="linkTo" :click-handler="pageSelected"></c-pager-item>
+        <c-pager-item :b-cur="currentPage == numPages-1" :pageid="currentPage+1" :text="nextText" classes="next" :link-to="linkTo" :click-handler="pageSelected" v-show="bShowNext"></c-pager-item>
     </div>
 </template>
 
@@ -140,11 +137,7 @@ export default{
     methods:{
         pageSelected(page_id, evt){
 			this.currentPage = page_id;
-            // drawLinks(); => 数据赋值
 			var continuePropagation = this.callback(page_id);
-			// if (!continuePropagation) {
-            //     evt.stopPropagation();
-			// }
 			return continuePropagation;
         },
         selectPage(page_id){
@@ -178,5 +171,11 @@ export default{
 </script>
 
 <style lang="sass" scoped>
-     
+     .ellipse-item{
+        display: inline-block;
+        padding: 0.1em 0.4em;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        cursor:pointer;
+     }
 </style>
