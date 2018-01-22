@@ -2,7 +2,7 @@
   "name": "vue-pageman",
   "version": "0.0.3",
   "description": "a vue pager component",
-  "main": "dist/vue-pager.js",
+  "main": "dist/vue-pageman.js",
   "scripts": {
     "build": "webpack --config ./build/webpack.prod.conf.js",
     "test": "webpack --config ./build/webpack.test.conf.js",
