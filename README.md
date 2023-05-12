@@ -26,9 +26,9 @@ const { pager } = VuePageman;
 Vue.component('c-pager',pager);
 ```
 ```html
-<c-pager :total="total" :pgeSize="10" 
+<c-pager :total="total" :pageSize="10" 
          :num-display-entries="4" :num-edge-entries="1" 
-         :cur-page="1"></c-pager>
+         :current-page="0"></c-pager>
 ```
 
 ### Params

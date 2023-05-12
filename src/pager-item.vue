@@ -1,6 +1,6 @@
 <template>
     <span v-if="bCur" class='current page-item' :class="classes" v-text="text"></span>
-    <a v-else :href="link" v-text="text" class="page-item" :class="classes" @click="clickHandler(pageid)"></a>
+    <a v-else :href="link" v-text="text" class="page-item" :class="classes"></a>
 </template>
 
 <script>
@@ -26,16 +26,11 @@ export default{
         linkto:{
             type:String,
             default:'#'
-        },
-        clickHandler:{
-            type:Function,
-            default:function(){},
-            required:true
         }
     },
     data(){
         return {
-            current_page: this.cur_page
+           
         }
     },
     computed:{
@@ -71,5 +66,5 @@ export default{
         color: #999;
         border-color: #999;
         background: #fff;
-    }
+     }
 </style>

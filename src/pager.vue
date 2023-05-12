@@ -1,12 +1,12 @@
 <template>
-    <div class="pager">
-        <c-pager-item :b-cur="currentPage == 0" :pageid="currentPage-1" :text="prevText" classes="prev" :link-to="linkTo" :click-handler="pageSelected" v-show="bShowPrev"></c-pager-item>
-        <c-pager-item :b-cur="currentPage == i" v-for="(i,index) in sItems" :pageid="i" :text="String(i+1)" :key="'sitem'+index" :link-to="linkTo" :click-handler="pageSelected"></c-pager-item>
+    <div class="pager" @click="pageSelected($event)">
+        <c-pager-item :b-cur="currentPage == 0" :pageid="currentPage-1" :text="prevText" classes="prev" :link-to="linkTo"  v-show="bShowPrev"></c-pager-item>
+        <c-pager-item :b-cur="currentPage == i" v-for="(i,index) in sItems" :pageid="i" :text="String(i+1)" :key="'sitem'+index" :link-to="linkTo"></c-pager-item>
         <span v-if="bShowStartEllipseItem" v-text="ellipseText" class="ellipse-item"></span>
-        <c-pager-item :b-cur="currentPage == i" v-for="(i,index) in mItems" :pageid="i" :text="String(i+1)" :key="'mitem'+index" :link-to="linkTo" :click-handler="pageSelected"></c-pager-item>
+        <c-pager-item :b-cur="currentPage == i" v-for="(i,index) in mItems" :pageid="i" :text="String(i+1)" :key="'mitem'+index" :link-to="linkTo"></c-pager-item>
         <span v-if="bShowEndEllipseItem" v-text="ellipseText" class="ellipse-item"></span>
-        <c-pager-item :b-cur="currentPage == i" v-for="(i,index) in eItems" :pageid="i" :text="String(i+1)" :key="'eitem'+index" :link-to="linkTo" :click-handler="pageSelected"></c-pager-item>
-        <c-pager-item :b-cur="currentPage == numPages-1" :pageid="currentPage+1" :text="nextText" classes="next" :link-to="linkTo" :click-handler="pageSelected" v-show="bShowNext"></c-pager-item>
+        <c-pager-item :b-cur="currentPage == i" v-for="(i,index) in eItems" :pageid="i" :text="String(i+1)" :key="'eitem'+index" :link-to="linkTo"></c-pager-item>
+        <c-pager-item :b-cur="currentPage == numPages-1" :pageid="currentPage+1" :text="nextText" classes="next" :link-to="linkTo" v-show="bShowNext"></c-pager-item>
     </div>
 </template>
 
@@ -28,7 +28,7 @@ export default{
             type:Number,
             default:10
         },
-        curPage:{
+        currentPage:{
             type:Number,
             default:0
         },
@@ -59,15 +59,11 @@ export default{
         linkTo:{
             type:String,
             default:'#'
-        },
-        callback:{
-            type:Function,
-            default:function(){return false;}
         }
     },
     data(){
         return {
-            currentPage:this.curPage
+            
         }
     },
     computed:{
@@ -135,34 +131,10 @@ export default{
         }
     },
     methods:{
-        pageSelected(page_id, evt){
-			this.currentPage = page_id;
-			var continuePropagation = this.callback(page_id);
-			return continuePropagation;
-        },
-        selectPage(page_id){
-            this.pageSelected(page_id);
-        },
-        prevPage(){
-            var current_page = this.currentPage;
-			if (current_page > 0) {
-				pageSelected(current_page - 1);
-				return true;
-			}
-			else {
-				return false;
-			}
-		},
-		nextPage(){
-            var current_page = this.currentPage;
-			if(current_page < this.numPages - 1) {
-				pageSelected(current_page+1);
-				return true;
-			}
-			else {
-				return false;
-			}
-		}
+        pageSelected(e){
+			this.currentPage = e.target.pageId;
+            this.$emit('select', this.currentPage)
+        }
     },
     components:{
         'c-pager-item':pageritem
